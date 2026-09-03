@@ -1,20 +1,14 @@
 FROM python:3.11-slim
 
-# Устанавливаем системные зависимости для PyMuPDF
-RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
 
-# Копируем requirements.txt ИЗ ПАПКИ backend
+# Копируем requirements.txt
 COPY backend/requirements.txt .
 
-# Устанавливаем зависимости
+# Устанавливаем зависимости Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем весь код из папки backend в рабочую папку
+# Копируем весь код из папки backend
 COPY backend/ .
 
 # Создаем папку для базы данных
