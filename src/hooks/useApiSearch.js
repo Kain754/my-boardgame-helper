@@ -9,7 +9,7 @@ export function useApiSearch() {
 
   const loadGames = async () => {
     try {
-      const response = await fetch('http://localhost:8000/games');
+      const response = await fetch('https://my-boardgame-helper.onrender.com');
       if (!response.ok) throw new Error('Ошибка загрузки списка игр');
       const data = await response.json();
       setGames(data);
@@ -28,7 +28,7 @@ export function useApiSearch() {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8000/search', {
+      const response = await fetch('https://my-boardgame-helper.onrender.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
