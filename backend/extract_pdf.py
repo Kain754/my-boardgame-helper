@@ -1,52 +1,43 @@
-import pymupdf as fitz
 import os
 import base64
 from database import SessionLocal, GameRule
-
+import PyPDF2
 
 def extract_pdf_to_db(pdf_path, game_name):
-    """Извлекает текст и страницы из PDF и сохраняет в БД"""
-
+    """Извлекает текст из PDF и сохраняет в БД (без картинок для Render)"""
+    
     if not os.path.exists(pdf_path):
         print(f"❌ Файл {pdf_path} не найден!")
         return
 
     db = SessionLocal()
-    doc = fitz.open(pdf_path)
-
-    print(f"📄 Обработка: {pdf_path}")
-
-    for page_num in range(len(doc)):
-        page = doc[page_num]
-        text = page.get_text()
-
-        # --- НОВОЕ: сохраняем страницу как картинку ---
-        # Рендерим страницу в изображение (масштаб 2x для четкости)
-        mat = fitz.Matrix(2, 2)
-        pix = page.get_pixmap(matrix=mat)
-        img_bytes = pix.tobytes("png")
-
-        # Конвертируем в base64 для передачи в JSON
-        img_base64 = base64.b64encode(img_bytes).decode('utf-8')
-
-        rule = GameRule(
-            game_name=game_name,
-            page_number=page_num + 1,
-            content=text,
-            image=img_base64,  # Сохраняем base64 строку
-            image_url=None
-        )
-        db.add(rule)
-        print(f"   Страница {page_num + 1}: {len(text)} символов, изображение сохранено")
-
+    
+    with open(pdf_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        
+        for page_num in range(len(reader.pages)):
+            page = reader.pages[page_num]
+            text = page.extract_text() or ""
+            
+            # Для Render: не сохраняем картинки (их будет сложно загрузить)
+            # Вместо этого оставляем поле image пустым
+            rule = GameRule(
+                game_name=game_name,
+                page_number=page_num + 1,
+                content=text,
+                image=None,  # Картинки не сохраняем
+                image_url=None
+            )
+            db.add(rule)
+            print(f"   Страница {page_num + 1}: {len(text)} символов")
+    
     db.commit()
     db.close()
-    print(f"✅ {game_name} загружена! Страниц: {len(doc)}")
-
+    print(f"✅ {game_name} загружена! Страниц: {len(reader.pages)}")
 
 def load_all_pdfs_from_folder(folder_path):
     """Загружает все PDF из папки в БД"""
-
+    
     if not os.path.exists(folder_path):
         print(f"❌ Папка {folder_path} не найдена!")
         return
@@ -65,7 +56,6 @@ def load_all_pdfs_from_folder(folder_path):
         game_name = os.path.splitext(pdf_file)[0]
         pdf_path = os.path.join(folder_path, pdf_file)
         extract_pdf_to_db(pdf_path, game_name)
-
 
 if __name__ == "__main__":
     rules_folder = "../public/rules"
