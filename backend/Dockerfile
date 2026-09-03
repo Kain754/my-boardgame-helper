@@ -8,12 +8,14 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Копируем и устанавливаем зависимости
-COPY requirements.txt .
+# Копируем requirements.txt ИЗ ПАПКИ backend
+COPY backend/requirements.txt .
+
+# Устанавливаем зависимости
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем весь код
-COPY . .
+# Копируем весь код из папки backend в рабочую папку
+COPY backend/ .
 
 # Создаем папку для базы данных
 RUN mkdir -p /app/data
