@@ -1,0 +1,380 @@
+/* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: #f5f0eb;
+  color: #2d2a24;
+  padding: 20px;
+}
+
+/* ===== ОБЕРТКА ПРИЛОЖЕНИЯ ===== */
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ===== ШАПКА ===== */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  color: #1a1a2e;
+}
+
+.header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* ===== ФОРМА ПОИСКА ===== */
+.search-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 14px 20px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #6c5ce7;
+}
+
+.search-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.search-form button {
+  padding: 14px 32px;
+  background: #6c5ce7;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.search-form button:hover:not(:disabled) {
+  background: #5a4bd1;
+}
+
+.search-form button:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.search-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== ВЫБОР ИГРЫ ===== */
+.game-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.game-selector label {
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}
+
+.game-selector select {
+  padding: 8px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s;
+  flex: 1;
+}
+
+.game-selector select:focus {
+  border-color: #6c5ce7;
+}
+
+/* ===== СООБЩЕНИЯ ===== */
+.error-message,
+.no-results,
+.welcome-message {
+  text-align: center;
+  padding: 30px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  margin-top: 20px;
+}
+
+.error-message {
+  background: #fff5f5;
+  border: 1px solid #fcc;
+}
+
+.error-message p {
+  color: #c0392b;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 6px;
+}
+
+/* ===== РЕЗУЛЬТАТЫ ПОИСКА ===== */
+.results-container {
+  margin-top: 20px;
+}
+
+.results-count {
+  color: #555;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  padding: 10px 16px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.result-item {
+  background: white;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.result-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.result-header {
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #6c5ce7;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.result-header .page-badge {
+  background: #6c5ce7;
+  color: white;
+  padding: 2px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* ===== КАРТИНКА СТРАНИЦЫ ===== */
+.page-image-container {
+  margin: 12px 0;
+  background: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  position: relative;
+  border: 1px solid #eee;
+}
+
+.page-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.page-image:hover {
+  transform: scale(1.005);
+}
+
+.image-hint {
+  text-align: center;
+  font-size: 0.7rem;
+  color: #aaa;
+  padding: 4px 0 6px 0;
+  background: #f9f9f9;
+  border-top: 1px solid #eee;
+  user-select: none;
+}
+
+/* ===== НЕТ КАРТИНКИ ===== */
+.no-image {
+  padding: 20px;
+  text-align: center;
+  background: #fff8f0;
+  border-radius: 10px;
+  border: 1px dashed #e67e22;
+  color: #e67e22;
+  margin: 12px 0;
+}
+
+/* ===== ФРАГМЕНТЫ ТЕКСТА ===== */
+.snippets {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: #f8f6ff;
+  border-radius: 10px;
+  border-left: 4px solid #6c5ce7;
+}
+
+.snippets-label {
+  font-size: 0.8rem;
+  color: #6c5ce7;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.snippet-item {
+  font-size: 0.9rem;
+  color: #444;
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+  line-height: 1.5;
+}
+
+.snippet-item:last-child {
+  border-bottom: none;
+}
+
+/* ===== АДАПТИВНОСТЬ (МОБИЛЬНЫЕ) ===== */
+@media (max-width: 600px) {
+  body {
+    padding: 12px;
+  }
+
+  .search-form {
+    flex-direction: column;
+  }
+
+  .search-form button {
+    width: 100%;
+  }
+
+  .header h1 {
+    font-size: 1.6rem;
+  }
+
+  .game-selector {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .result-item {
+    padding: 14px 16px;
+  }
+
+  .result-header {
+    font-size: 0.85rem;
+  }
+
+  .snippets {
+    padding: 10px 12px;
+  }
+
+  .snippet-item {
+    font-size: 0.82rem;
+  }
+
+  .page-image-container {
+    border-radius: 6px;
+  }
+
+  .image-hint {
+    font-size: 0.6rem;
+  }
+}
+
+/* ===== ДОПОЛНИТЕЛЬНО: ЛОАДЕР ===== */
+.loader {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.loader-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid #eee;
+  border-top: 4px solid #6c5ce7;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== ПОДСВЕТКА НАЙДЕННОГО СЛОВА (будет использоваться позже) ===== */
+.highlight {
+  background-color: #ffeb3b;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ===== СКРОЛЛ ДЛЯ ДЛИННЫХ КАРТИНОК ===== */
+.page-image-container {
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.page-image-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.page-image-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.page-image-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.page-image-container::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
