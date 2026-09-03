@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const API_URL = 'https://my-boardgame-helper.onrender.com'; // БЕЗ СЛЕША В КОНЦЕ!
+
 export function useApiSearch() {
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +11,7 @@ export function useApiSearch() {
 
   const loadGames = async () => {
     try {
-      const response = await fetch('https://my-boardgame-helper.onrender.com');
+      const response = await fetch(`${API_URL}/games`);
       if (!response.ok) throw new Error('Ошибка загрузки списка игр');
       const data = await response.json();
       setGames(data);
@@ -28,7 +30,7 @@ export function useApiSearch() {
     setError(null);
 
     try {
-      const response = await fetch('https://my-boardgame-helper.onrender.com', {
+      const response = await fetch(`${API_URL}/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
