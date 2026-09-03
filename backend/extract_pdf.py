@@ -62,6 +62,7 @@ def load_all_pdfs_from_folder(folder_path):
         extract_pdf_to_db(pdf_path, game_name)
 
 if __name__ == "__main__":
+    # Ищем PDF в папке rules ВНУТРИ backend
     rules_folder = "rules"
 
     if not os.path.exists(rules_folder):
