@@ -62,7 +62,7 @@ def load_all_pdfs_from_folder(folder_path):
         extract_pdf_to_db(pdf_path, game_name)
 
 if __name__ == "__main__":
-    rules_folder = "../public/rules"
+    rules_folder = "rules"
 
     if not os.path.exists(rules_folder):
         os.makedirs(rules_folder)
