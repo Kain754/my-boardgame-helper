@@ -7,23 +7,6 @@ import subprocess
 
 app = FastAPI()
 
-# --- ЗАПУСК ИНДЕКСАЦИИ PDF ПРИ СТАРТЕ СЕРВЕРА ---
-@app.on_event("startup")
-def startup_event():
-    print("🚀 Запуск индексации PDF...")
-    try:
-        result = subprocess.run(
-            ["python", "extract_pdf.py"],
-            capture_output=True,
-            text=True,
-            cwd=os.path.dirname(os.path.abspath(__file__))
-        )
-        print(result.stdout)
-        if result.stderr:
-            print("Ошибки:", result.stderr)
-    except Exception as e:
-        print(f"❌ Ошибка индексации: {e}")
-
 # --- НАСТРОЙКА CORS ---
 app.add_middleware(
     CORSMiddleware,
@@ -37,9 +20,11 @@ class SearchQuery(BaseModel):
     query: str
     game_name: str = None
 
-# --- ЭНДПОИНТ ПОИСКА ---
+# --- ЭНДПОИНТ ПОИСКА (POST) ---
 @app.post("/search")
 def search_rules(search: SearchQuery):
+    print(f"🔍 Поиск: {search.query}, игра: {search.game_name}")
+    
     db = SessionLocal()
     
     query = db.query(GameRule)
@@ -68,7 +53,7 @@ def search_rules(search: SearchQuery):
     
     return {"results": list(pages.values())}
 
-# --- ЭНДПОИНТ СПИСОК ИГР ---
+# --- ЭНДПОИНТ СПИСОК ИГР (GET) ---
 @app.get("/games")
 def list_games():
     db = SessionLocal()
@@ -76,7 +61,7 @@ def list_games():
     db.close()
     return [g[0] for g in games]
 
-# --- ЭНДПОИНТ ПРОВЕРКИ ---
+# --- ПРОВЕРКА ЖИЗНИ ---
 @app.get("/")
 def root():
     return {"message": "Помощник по правилам API работает"}
@@ -85,33 +70,7 @@ def root():
 def health():
     return {"status": "ok"}
 
-# --- ЭНДПОИНТ ДЛЯ РУЧНОЙ ЗАГРУЗКИ (на случай, если автоиндексация не сработала) ---
-@app.post("/admin/load-rules")
-def load_rules():
-    try:
-        result = subprocess.run(
-            ["python", "extract_pdf.py"],
-            capture_output=True,
-            text=True,
-            cwd=os.path.dirname(os.path.abspath(__file__))
-        )
-        return {
-            "success": True,
-            "stdout": result.stdout,
-            "stderr": result.stderr
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
-
-# --- ЭНДПОИНТ ДЛЯ ОТЛАДКИ (проверка наличия файлов) ---
-@app.get("/debug/files")
-def debug_files():
-    import os
-    files = []
-    for root, dirs, filenames in os.walk("."):
-        for f in filenames:
-            files.append(os.path.join(root, f))
-    return {"files": files[:50]}
+# --- ОТЛАДКА: список эндпоинтов ---
+@app.get("/debug/routes")
+def debug_routes():
+    return [{"path": route.path, "methods": list(route.methods)} for route in app.routes]
